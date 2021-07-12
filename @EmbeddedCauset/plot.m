@@ -27,7 +27,7 @@ function [ handles, dims ] = plot( obj, varargin )
 %                     Default: all
 % 'Set'               Set of events to be plotted. 
 %                     Default: all
-% 'Lables'            Plot properties for event labels.
+% 'Labels'            Plot properties for event labels.
 %     false, 'none'     do not plot event labels (Default)
 %     true              plot event labels with default settings:
 %                         'VerticalAlignment'      'top'

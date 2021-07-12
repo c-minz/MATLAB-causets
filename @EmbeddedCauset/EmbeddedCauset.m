@@ -95,20 +95,33 @@ classdef EmbeddedCauset < Causet
                     isvaluesupported = isnumeric( value ) && ...
                         ( size( value, 2 ) == d );
                     if isvaluesupported
-                        obj.Coords = value;
                         obj.Card = size( value, 1 );
-                        if ~isshapeinit
-                            ranges = zeros( 2, size( value, 2 ) );
-                            for k = 1 : size( value, 2 )
-                                ranges( :, k ) = ...
-                                    [ min( value( :, k ) ), max( value( :, k ) ) ];
-                            end
-                            obj.initShape( d, 'cuboid', ranges );
-                            isshapeinit = true;
-                        end
+                        obj.Coords = value;
+                    end
+                elseif strcmp( key, 'permutation' )
+                    isvaluesupported = isnumeric( value );
+                    if isvaluesupported
+                        obj.Card = length( value );
+                        obj.Coords = zeros( obj.Card, d );
+                        crd_u = value - 0.5;
+                        crd_v = ( 1 : obj.Card ) + 0.5;
+                        obj.Coords( :, 1 ) = crd_u + crd_v;
+                        obj.Coords( :, 2 ) = crd_u - crd_v;
                     end
                 else
                     warning( 'Key ''%s'' is unknown.', key );
+                end
+                if strcmp( key, 'permutation' ) || strcmp( key, 'coords' ) ...
+                        || strcmp( key, 'coordinates' )
+                    if isvaluesupported && ~isshapeinit
+                        ranges = zeros( 2, size( value, 2 ) );
+                        for k = 1 : size( value, 2 )
+                            ranges( :, k ) = ...
+                                [ min( value( :, k ) ), max( value( :, k ) ) ];
+                        end
+                        obj.initShape( d, 'cuboid', ranges );
+                        isshapeinit = true;
+                    end
                 end
                 if ~isvaluesupported
                     warning( 'Value type ''%s'' is not supported for key ''%s''.', ...
