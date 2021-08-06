@@ -63,6 +63,7 @@ classdef Causet < handle
         s = PastInfOf( obj, list, varargin );
         s = FutureInfOf( obj, list, varargin );
         varargout = CardPositioning( obj, e, ac );
+        [ P, varargout ] = DAlembertian( obj, PrefPast, method );
         
         %% link relations:
         link( obj ); % force to recalculate links
