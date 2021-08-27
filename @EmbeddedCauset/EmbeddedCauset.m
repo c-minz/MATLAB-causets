@@ -86,19 +86,22 @@ classdef EmbeddedCauset < Causet
                     else
                         isvaluesupported = false;
                     end
-                elseif strcmp( key, 'coordsys' ) || strcmp( key, 'coordinatesystem' )
+                elseif strcmp( key, 'coordsys' ) ...
+                        || strcmp( key, 'coordinatesystem' )
                     isvaluesupported = ischar( value ) || isstring( value );
                     if isvaluesupported
                         obj.CoordSys = value;
                     end
-                elseif strcmp( key, 'coords' ) || strcmp( key, 'coordinates' )
+                elseif strcmp( key, 'coords' ) ....
+                        || strcmp( key, 'coordinates' )
                     isvaluesupported = isnumeric( value ) && ...
                         ( size( value, 2 ) == d );
                     if isvaluesupported
                         obj.Card = size( value, 1 );
                         obj.Coords = value;
                     end
-                elseif strcmp( key, 'permutation' )
+                elseif strcmp( key, 'permutation' ) ...
+                        || strcmp( key, 'v-permutation' )
                     isvaluesupported = isnumeric( value );
                     if isvaluesupported
                         obj.Card = length( value );
@@ -108,10 +111,23 @@ classdef EmbeddedCauset < Causet
                         obj.Coords( :, 1 ) = crd_u + crd_v;
                         obj.Coords( :, 2 ) = crd_u - crd_v;
                     end
+                elseif strcmp( key, 'u-permutation' )
+                    isvaluesupported = isnumeric( value );
+                    if isvaluesupported
+                        obj.Card = length( value );
+                        obj.Coords = zeros( obj.Card, d );
+                        crd_u = value - 0.5;
+                        crd_v = ( 1 : obj.Card ) + 0.5;
+                        obj.Coords( value, 1 ) = crd_u + crd_v;
+                        obj.Coords( value, 2 ) = crd_u - crd_v;
+                    end
                 else
                     warning( 'Key ''%s'' is unknown.', key );
                 end
-                if strcmp( key, 'permutation' ) || strcmp( key, 'coords' ) ...
+                if strcmp( key, 'permutation' ) ...
+                        || strcmp( key, 'v-permutation' ) ...
+                        || strcmp( key, 'u-permutation' ) ...
+                        || strcmp( key, 'coords' ) ...
                         || strcmp( key, 'coordinates' )
                     if isvaluesupported && ~isshapeinit
                         ranges = zeros( 2, size( value, 2 ) );
