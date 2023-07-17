@@ -112,7 +112,8 @@ classdef EmbeddedCauset < Causet
                         obj.Card = length( value );
                         s = obj.ShapeParam / obj.Card;
                         event_order = 1:obj.Card;
-                        if strcmp( key, 'u-permutation' )
+                        if strcmp( key, 'permutation' ) ...
+                                || strcmp( key, 'v-permutation' )
                             event_order = value - min( value ) + 1;
                         end
                         obj.Coords = zeros( obj.Card, d );
@@ -122,16 +123,6 @@ classdef EmbeddedCauset < Causet
                             s * ( crd_u + crd_v + 1 ) - obj.ShapeParam;
                         obj.Coords( event_order, 2 ) = ...
                             s * ( crd_u - crd_v );
-                    end
-                elseif strcmp( key, 'u-permutation' )
-                    isvaluesupported = isnumeric( value );
-                    if isvaluesupported
-                        obj.Card = length( value );
-                        obj.Coords = zeros( obj.Card, d );
-                        crd_u = value - 0.5;
-                        crd_v = ( 1 : obj.Card ) + 0.5;
-                        obj.Coords( value, 1 ) = crd_u + crd_v;
-                        obj.Coords( value, 2 ) = crd_u - crd_v;
                     end
                 else
                     warning( 'Key ''%s'' is unknown.', key );
