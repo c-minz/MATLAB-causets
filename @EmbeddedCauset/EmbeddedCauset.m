@@ -101,15 +101,27 @@ classdef EmbeddedCauset < Causet
                         obj.Coords = value;
                     end
                 elseif strcmp( key, 'permutation' ) ...
-                        || strcmp( key, 'v-permutation' )
+                        || strcmp( key, 'v-permutation' ) ...
+                        || strcmp( key, 'u-permutation' )
                     isvaluesupported = isnumeric( value );
                     if isvaluesupported
+                        if ~isshapeinit
+                            obj.initShape( 2, 'bicone', 1.0 );
+                            isshapeinit = true;
+                        end
                         obj.Card = length( value );
+                        s = obj.ShapeParam / obj.Card;
+                        event_order = 1:obj.Card;
+                        if strcmp( key, 'u-permutation' )
+                            event_order = value - min( value ) + 1;
+                        end
                         obj.Coords = zeros( obj.Card, d );
-                        crd_u = value - 0.5;
-                        crd_v = ( 1 : obj.Card ) + 0.5;
-                        obj.Coords( :, 1 ) = crd_u + crd_v;
-                        obj.Coords( :, 2 ) = crd_u - crd_v;
+                        crd_u = value - min( value );
+                        crd_v = ( 1 : obj.Card ) - 1;
+                        obj.Coords( event_order, 1 ) = ...
+                            s * ( crd_u + crd_v + 1 ) - obj.ShapeParam;
+                        obj.Coords( event_order, 2 ) = ...
+                            s * ( crd_u - crd_v );
                     end
                 elseif strcmp( key, 'u-permutation' )
                     isvaluesupported = isnumeric( value );
@@ -124,16 +136,14 @@ classdef EmbeddedCauset < Causet
                 else
                     warning( 'Key ''%s'' is unknown.', key );
                 end
-                if strcmp( key, 'permutation' ) ...
-                        || strcmp( key, 'v-permutation' ) ...
-                        || strcmp( key, 'u-permutation' ) ...
-                        || strcmp( key, 'coords' ) ...
+                if strcmp( key, 'coords' ) ...
                         || strcmp( key, 'coordinates' )
                     if isvaluesupported && ~isshapeinit
-                        ranges = zeros( 2, size( value, 2 ) );
-                        for k = 1 : size( value, 2 )
+                        ranges = zeros( 2, size( obj.Coords, 2 ) );
+                        for k = 1 : size( obj.Coords, 2 )
                             ranges( :, k ) = ...
-                                [ min( value( :, k ) ), max( value( :, k ) ) ];
+                                [ min( obj.Coords( :, k ) ), ...
+                                  max( obj.Coords( :, k ) ) ];
                         end
                         obj.initShape( d, 'cuboid', ranges );
                         isshapeinit = true;
