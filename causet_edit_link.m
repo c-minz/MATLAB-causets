@@ -19,14 +19,13 @@ function [ L, C ] = causet_edit_link( coordinates, spacetime )
     
     N = size( coordinates, 1 );
     d = size( coordinates, 2 );
-    if nargin < 3
+    if nargin < 2
         spacetime = 'Minkowski';
     end
     if strcmp( spacetime, 'Minkowski' )
         % set Minkowski metric:
-        metrictime = zeros( d );
-        metrictime( 1, 1 ) = 1;
-        metric = 2 * metrictime - eye( d );
+        metric = -eye( d );
+        metric( 1, 1 ) = 1;
         % compute links:
         C = false( N );
         L = false( N );
