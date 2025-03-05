@@ -4,7 +4,7 @@ classdef Causet < handle
 %   As a second argument, the link matrix L can be provided if it is 
 %   known - otherwise it will be computed at the first use.
 % 
-% Copyright 2021, C. Minz. BSD 3-Clause License.
+% Copyright 2021-2024, C. Minz. BSD 3-Clause License.
     
     properties(SetAccess = protected)
         Card   % int32: cardinality of the causal set

@@ -4,7 +4,7 @@ function [ P, varargout ] = DAlembertian( obj, PrefPast, method )
 % 
 % Arguments:
 % PrefPast            Preferred past structure either as lower triangular
-%                     matrix as a vector of preferred past indices.
+%                     matrix or as a vector of preferred past indices.
 %                     For causet with 6 events, for example:
 %                     [0 0 0 1 1 4], meaning that the preferred past of 
 %                     events 1--3 is none, 4 and 5 have event 1, 6 has
@@ -19,6 +19,9 @@ function [ P, varargout ] = DAlembertian( obj, PrefPast, method )
 % 
 % Returns:
 % P                   d'Alembertian matrix.
+% 
+% Copyright 2023, C. Minz. BSD 3-Clause License.
+
     narginchk( 2, 3 );
     if nargin < 3
         method = '2D';

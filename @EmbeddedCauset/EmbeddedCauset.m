@@ -161,12 +161,11 @@ classdef EmbeddedCauset < Causet
             end
             vol = obj.Volume;
         end
-        
+
+        ProperTime( obj, a, b, signed );
         transformCoords( obj, newcoordsys );
-        
-        [ handles, dims ] = plot( obj, varargin );
-        
         s = TimeSlice( obj, t, k, varargin );
+        [ handles, dims ] = plot( obj, varargin );
         
         %% causals:
         addEvent( obj, varargin );

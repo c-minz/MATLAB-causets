@@ -30,4 +30,4 @@ New code is developed mostly in the programming language Python such that the co
 
 The source code is published under the BSD 3-Clause License, see [license file](LICENSE.md).
 
-Copyright (c) 2020-2021, Christoph Minz
+Copyright (c) 2020-2025, Christoph Minz
