@@ -4,7 +4,7 @@ classdef Causet < handle
 %   As a second argument, the link matrix L can be provided if it is 
 %   known - otherwise it will be computed at the first use.
 % 
-% Copyright 2021-2024, C. Minz. BSD 3-Clause License.
+% Copyright 2021-2025, C. Minz. BSD 3-Clause License.
     
     properties(SetAccess = protected)
         Card   % int32: cardinality of the causal set
@@ -63,6 +63,7 @@ classdef Causet < handle
         s = PastInfOf( obj, list, varargin );
         s = FutureInfOf( obj, list, varargin );
         varargout = CardPositioning( obj, e, ac );
+        
         [ P, varargout ] = DAlembertian( obj, PrefPast, method );
         
         %% link relations:
@@ -220,7 +221,7 @@ classdef Causet < handle
         
         function set = sels_getset( obj, i, type )
             if ( nargin < 3 ) || isempty( type )
-                if length( i ) == 1
+                if isscalar( i )
                     set = obj.sels{ i, 1 };
                 else
                     set = obj.sels( i, 1 );
@@ -238,7 +239,7 @@ classdef Causet < handle
                         sel_idx( i_type ) = true;
                     end
                 end
-                if length( i ) == 1
+                if isscalar( i )
                     set = sel{ sel_idx, 1 };
                 else
                     set = sel( sel_idx, 1 );
@@ -283,7 +284,7 @@ classdef Causet < handle
                     end
                 end
             end
-            obj.sels = sel( sel_keep, : );
+            obj.Sels = sel( sel_keep, : );
         end
         
         function removeAllSels( obj, type )

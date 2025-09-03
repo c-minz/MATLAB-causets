@@ -27,7 +27,7 @@ classdef EmbeddedCauset < Causet
 % CoordSys            Name of the used coordinate system. Accepted values
 %                     are 'Cartesian' and 'spherical'.
 % 
-% Copyright 2021, C. Minz. BSD 3-Clause License.
+% Copyright 2021-2025, C. Minz. BSD 3-Clause License.
     
     properties(SetAccess = protected)
         Metric % char: Name of the metric: 'Minkowski', 'Schwarzschild' or 'EddingtonFinkelstein'
@@ -162,7 +162,7 @@ classdef EmbeddedCauset < Causet
             vol = obj.Volume;
         end
 
-        ProperTime( obj, a, b, signed );
+        propertime = ProperTime( obj, a, b, signed );
         transformCoords( obj, newcoordsys );
         s = TimeSlice( obj, t, k, varargin );
         [ handles, dims ] = plot( obj, varargin );
